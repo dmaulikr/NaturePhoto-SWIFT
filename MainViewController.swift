@@ -18,7 +18,7 @@ class MainViewController: UIViewController,UINavigationControllerDelegate, UIIma
     //1) Add ManagedObject Data Context
     let managedObjectContext =
     (UIApplication.sharedApplication().delegate
-        as AppDelegate).managedObjectContext
+        as! AppDelegate).managedObjectContext
     //2) Add variable contactdb (used from UITableView
     var photodb:NSManagedObject!
   
@@ -107,13 +107,13 @@ class MainViewController: UIViewController,UINavigationControllerDelegate, UIIma
         if (photodb != nil)
         {
             var loadSwitch:Bool
-            txtName.text = photodb.valueForKey("name") as String
-            txtDesc.text = photodb.valueForKey("desc") as String
-           txtLocation.text = photodb.valueForKey("location") as String
+            txtName.text = photodb.valueForKey("name") as! String
+            txtDesc.text = photodb.valueForKey("desc") as! String
+           txtLocation.text = photodb.valueForKey("location") as! String
              let myData: NSData? = photodb.valueForKey("photos") as? NSData
              photos.image = UIImage(data: myData!)
             btnSave.setTitle("Update", forState: UIControlState.Normal)
-           loadSwitch = photodb.valueForKey("fav") as Bool
+           loadSwitch = photodb.valueForKey("fav") as! Bool
             if loadSwitch == true
             {
                 favs.on=true
@@ -134,12 +134,15 @@ class MainViewController: UIViewController,UINavigationControllerDelegate, UIIma
         // Dispose of any resources that can be recreated.
     }
     
-    func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!) {
-        let selectedImage : UIImage = image
-        //var tempImage:UIImage = editingInfo[UIImagePickerControllerOriginalImage] as UIImage
-        photos.image=selectedImage
+   func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+    if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        photos.contentMode = .ScaleAspectFit
+        photos.image = pickedImage
+        newImageData = UIImageJPEGRepresentation(pickedImage, 1)
+    }
+
         self.dismissViewControllerAnimated(true, completion: nil)
-        newImageData = UIImageJPEGRepresentation(image, 1)
+    
 
     }
 

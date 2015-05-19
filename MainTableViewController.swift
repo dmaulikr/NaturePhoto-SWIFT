@@ -25,7 +25,7 @@ class MainTableViewController: UITableViewController {
     {
         
         let appDelegate =
-        UIApplication.sharedApplication().delegate as AppDelegate
+        UIApplication.sharedApplication().delegate as! AppDelegate
         
         let managedContext = appDelegate.managedObjectContext!
         
@@ -37,7 +37,7 @@ class MainTableViewController: UITableViewController {
         
         let fetchedResults =
         managedContext.executeFetchRequest(fetchRequest,
-            error: &error) as [NSManagedObject]?
+            error: &error) as! [NSManagedObject]?
         
         if let results = fetchedResults {
             photoArray = results
@@ -86,11 +86,11 @@ class MainTableViewController: UITableViewController {
         //7) Uncomment & Change to below to load rows
         let cell =
         tableView.dequeueReusableCellWithIdentifier("Cell")
-            as UITableViewCell
+            as! UITableViewCell
         
         let person = photoArray[indexPath.row]
-        cell.textLabel?.text = person.valueForKey("name") as String?
-        cell.detailTextLabel?.text = person.valueForKey("location") as String?
+        cell.textLabel?.text = person.valueForKey("name") as! String?
+        cell.detailTextLabel?.text = person.valueForKey("location") as! String?
         
         return cell
     }
@@ -116,7 +116,7 @@ class MainTableViewController: UITableViewController {
         //11 Change to delete swiped row
         if editingStyle == .Delete {
             let appDelegate =
-            UIApplication.sharedApplication().delegate as AppDelegate
+            UIApplication.sharedApplication().delegate as! AppDelegate
             let context = appDelegate.managedObjectContext!
             context.deleteObject(photoArray[indexPath.row])
             var error: NSError? = nil
